@@ -1,6 +1,6 @@
 {
   "name": "zzz-translate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "description": "젠레스 존 제로 용어를 반영하는 Discord 채널 번역 봇",
