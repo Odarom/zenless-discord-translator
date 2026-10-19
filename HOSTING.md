@@ -4,11 +4,17 @@
 
 ## 한국어
 
+이 문서는 **본인이 관리하는 Oracle·VPS·Linux 서버에서 실행할 때** 사용합니다.
+
+- **Windows PC에서 처음 사용:** [개인 연결 프로그램 다운로드·실행](README-ko.md#처음-사용하기--개인-연결-프로그램-다운로드)으로 이동하세요.
+- **서버에 처음 설치:** [프로젝트 소스 ZIP](https://github.com/Odarom/zenless-discord-translator/archive/refs/heads/main.zip)을 서버에 풀고, 아래 **개인 서버에서 실행** 절차를 따릅니다. Windows 실행용 ZIP은 PC용입니다.
+- **서버에 이미 설치했고 설정을 바꿀 때:** 아래 **여러 서버와 비공개 관리 화면** 절차를 사용합니다. SSH는 설치된 서버의 설정 화면을 내 PC 브라우저로 여는 보안 연결입니다.
+
 ### 설정 화면 다시 열기 · 키 변경
 
 PC에서는 압축을 풀었던 폴더의 **Start.cmd**를 다시 실행하면 설정 화면이 열립니다. 이미 실행 중이면 같은 프로그램의 화면만 다시 엽니다. 브라우저 창을 닫아도 실행 창은 켜 두어야 번역됩니다.
 
-개인 서버에서 돌린다면 PC용 Start.cmd 대신 [HOSTING.md의 SSH 관리 화면](HOSTING.md#several-servers-and-private-management-ui)을 사용합니다. 관리할 때마다 SSH 연결을 열고 서버의 현재 개인 관리 링크를 여세요. 주소의 127.0.0.1은 지금 쓰는 PC를 뜻하므로 서버용 주소만 북마크하면 다른 PC에서는 열리지 않습니다.
+개인 서버에서 돌린다면 PC용 Start.cmd 대신 [HOSTING.md의 SSH 관리 화면](HOSTING.md#여러-서버와-비공개-관리-화면)을 사용합니다. 관리할 때마다 SSH 연결을 열고 서버의 현재 개인 관리 링크를 여세요. 주소의 127.0.0.1은 지금 쓰는 PC를 뜻하므로 서버용 주소만 북마크하면 다른 PC에서는 열리지 않습니다.
 
 키 변경: **서버 프로필 선택 → API 키 입력칸 옆 [설정 변경을 위해 중지] → 키 입력 → [API 키·설정 저장] → [번역 연결 시작]**. 키를 비워 두면 기존 키를 유지합니다. 다른 서버 프로필은 계속 실행됩니다. **지금 갱신 확인**은 번역 API 호출 없이 DB만 확인하며, 바로 아래에 확인 중·최신 여부·실패 결과를 표시합니다.
 
@@ -82,6 +88,12 @@ PROJECT_REPORT_SHARING=on은 작성자가 별도 미리보기·동의 후 최소
 ---
 
 ## English
+
+Use this guide when running the translator on **your own Oracle/VPS/Linux server**.
+
+- **First-time Windows PC setup:** see [download and run the personal runner](README-en.md).
+- **First-time server setup:** extract the [project source ZIP](https://github.com/Odarom/zenless-discord-translator/archive/refs/heads/main.zip) on your server, then follow **Personal translator on a server** below. The Windows executable ZIP is for PC use.
+- **Manage an existing server installation:** use **Several servers and private management UI** below. SSH provides a secure connection to open that server’s settings in your PC browser.
 
 ### Reopen settings and change your key
 
@@ -161,11 +173,17 @@ Legacy `API_MODE=server` directly calls providers and lets the host decrypt subm
 
 ## 日本語
 
+この説明は、**自分が管理するOracle・VPS・Linuxサーバーで実行する場合**のものです。
+
+- **Windows PCで初めて使う場合：** [接続プログラムのダウンロード・実行](README-ja.md)を参照してください。
+- **サーバーへの新規導入：** [ソースZIP](https://github.com/Odarom/zenless-discord-translator/archive/refs/heads/main.zip)をサーバーで展開し、以下の**個人サーバーでの実行**に進んでください。Windows実行用ZIPはPC向けです。
+- **導入済みサーバーの設定変更：** 以下の**複数サーバーと非公開の管理画面**を使います。SSHは、そのサーバーの設定画面を手元のPCブラウザーで開くための安全な接続です。
+
 ### 設定画面を開き直す・キー変更
 
 PCでは展開先の**Start.cmd**をもう一度実行します。起動済みの場合は同じプログラムの設定画面を再表示します。ブラウザを閉じても翻訳には実行ウィンドウを開いたままにしてください。
 
-個人サーバーの場合はPC版を別起動せず、[SSH管理画面](HOSTING.md#several-servers-and-private-management-ui)を使います。管理のたびにSSH接続を開き、サーバーの現在の個人管理リンクを開いてください。127.0.0.1は操作中のPCを指すため、URLのブックマークだけでは別のPCから接続できません。
+個人サーバーの場合はPC版を別起動せず、[SSH管理画面](HOSTING.md#複数サーバーと非公開の管理画面)を使います。管理のたびにSSH接続を開き、サーバーの現在の個人管理リンクを開いてください。127.0.0.1は操作中のPCを指すため、URLのブックマークだけでは別のPCから接続できません。
 
 キー変更：**サーバープロファイル選択 → キー欄付近の［設定変更のため停止］→キー入力→［APIキー・設定を保存］→［翻訳接続を開始］**。空欄なら保存済みキーを保持し、他のプロファイルは動き続けます。**今すぐ更新を確認**は翻訳APIを呼び出さずDBだけを確認し、直下に確認中・最新・更新完了・失敗を表示します。
 
@@ -240,11 +258,17 @@ PROJECT_REPORT_SHARING=onでは、投稿者が別途プレビューと同意を�
 
 ## 简体中文
 
+本文用于**在自己管理的Oracle、VPS或Linux服务器上运行程序**。
+
+- **首次在Windows PC使用：** 参见[下载并运行个人连接程序](README-zh-CN.md)。
+- **首次安装到服务器：** 在服务器解压[项目源码ZIP](https://github.com/Odarom/zenless-discord-translator/archive/refs/heads/main.zip)，按照下方**在个人服务器运行**操作。Windows可执行ZIP用于PC。
+- **管理已安装的服务器程序：** 按下方**多个服务器与私有管理界面**操作。SSH是一种安全连接，用于在自己的PC浏览器中打开该服务器的设置页面。
+
 ### 重新打开设置及更换密钥
 
 PC用户从解压目录再次运行**Start.cmd**即可打开设置；若程序已运行，则重新打开同一实例的设置页面。关闭浏览器后，翻译仍需保持程序窗口运行。
 
-个人服务器用户应使用[SSH私有管理界面](HOSTING.md#several-servers-and-private-management-ui)，不要另行启动PC连接程序。每次管理时建立SSH隧道并打开服务器当前的私人管理链接。127.0.0.1指当前使用的PC，仅收藏该地址无法从另一台PC访问服务器。
+个人服务器用户应使用[SSH私有管理界面](HOSTING.md#多个服务器与私有管理界面)，不要另行启动PC连接程序。每次管理时建立SSH隧道并打开服务器当前的私人管理链接。127.0.0.1指当前使用的PC，仅收藏该地址无法从另一台PC访问服务器。
 
 更换密钥：**选择服务器配置 → 密钥输入框旁“停止以修改设置” → 输入密钥 → 保存API密钥及设置 → 启动翻译连接**。密钥留空则保留原密钥，其他配置继续运行。**立即检查更新**仅检查数据库，不调用翻译API；按钮下方显示检查中、已是最新、更新完成或失败。
 
