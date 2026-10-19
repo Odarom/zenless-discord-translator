@@ -1,8 +1,18 @@
 # ZZZ Discord Translator
 
-Translation supports 13 languages: Korean, English, Japanese, Simplified/Traditional Chinese, German, French, Spanish, Portuguese, Russian, Thai, Vietnamese and Indonesian. Interface text and guides remain in four languages. Another 16,802 localized names extend 1,868 existing concepts across nine additional languages. Ten placeholder values are excluded; missing names are not invented. New/unreleased terms require confirmed live availability before review. After installing this program update, additions and corrections within these 13 languages can arrive through DB updates. Adding a new language code still requires a program update.
-
 [한국어](README-ko.md) · [English](README-en.md) · [日本語](README-ja.md) · [简体中文](README-zh-CN.md)
+
+## Get started · Download the personal runner
+
+**The personal runner is ZZZ Discord Runner, available below.** Run **Start.cmd** from the extracted folder to open the settings page in your browser, where you enter your API key and pairing code.
+
+1. [Install the bot in your Discord server](https://discord.com/oauth2/authorize?client_id=1557261995215028254). Manage Server permission is required.
+2. **[Download the personal runner · Windows x64 ZIP](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.2/zenless-discord-runner-0.3.2-win-x64.zip)**. On the release page, choose **Assets → zenless-discord-runner-0.3.2-win-x64.zip**. **Source code (zip)** is for developers, not the ready-to-run PC package.
+3. **Extract all** files, then run **Start.cmd** (**Start** if extensions are hidden) from the extracted folder. Do not run it inside the ZIP. Node.js is included.
+4. In the settings page, **enter your own API key → Save API key and settings**. Run **/zzz connect** in Discord, enter the returned code in that settings page, then choose **Pair with bot → Start translation**.
+5. Use **/zzz link** in Discord to connect language channels to the same group. See the [full channel setup guide](README-en.md#windows-pc).
+
+**To run on your own Oracle/VPS server:** follow the [server installation and management guide](HOSTING.md#english). If it is already installed there, open that server’s management UI. Keep the PC program or server process running, according to where you installed it.
 
 [Install bot](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [Download PC runner](https://github.com/Odarom/zenless-discord-translator/releases/latest) · [Terms](TERMS.md) · [Privacy](PRIVACY.md)
 
@@ -59,3 +69,8 @@ On PC, run **Start.cmd** again from the extracted folder. If the program is alre
 For a personal server, use the [private SSH management UI](HOSTING.md#several-servers-and-private-management-ui) instead of starting a second PC runner. Each time you manage it, establish the SSH tunnel and open the server’s current private management link. 127.0.0.1 refers to the PC you are using; bookmarking that address alone does not provide access from another PC.
 
 To change a key: **select the server profile → Stop to change settings beside the key field → enter the key → Save API key and settings → Start translation**. Leave the key blank to keep it. Other profiles keep running. **Check for updates** checks only the DB, makes no translation API call, and shows progress, current/update status or failure directly below the button.
+
+
+## Supported languages
+
+Translation supports 13 languages: Korean, English, Japanese, Simplified/Traditional Chinese, German, French, Spanish, Portuguese, Russian, Thai, Vietnamese and Indonesian. Interface text and guides remain in four languages. Another 16,802 localized names extend 1,868 existing concepts across nine additional languages. Ten placeholder values are excluded; missing names are not invented. New/unreleased terms require confirmed live availability before review. After installing this program update, additions and corrections within these 13 languages can arrive through DB updates. Adding a new language code still requires a program update.

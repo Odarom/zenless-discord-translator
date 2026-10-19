@@ -1,8 +1,18 @@
 # ZZZ Discord翻译器
 
-翻译支持韩语、英语、日语、简体/繁体中文、德语、法语、西班牙语、葡萄牙语、俄语、泰语、越南语和印尼语，共13种语言。界面及说明保留原有4种语言。为1,868个既有概念关联额外9种语言的16,802个名称，排除10个测试占位值，不编造缺失名称。新增及未发布术语须确认正式实装后再审核。安装本次程序更新后，同一13种语言内的名称补充和修正可通过DB更新接收；增加新语言代码仍需程序更新。
-
 [한국어](README-ko.md) · [English](README-en.md) · [日本語](README-ja.md) · [简体中文](README-zh-CN.md)
+
+## 首次使用 · 下载个人连接程序
+
+**个人连接程序就是下方提供的ZZZ Discord Runner。** 从解压目录运行**Start.cmd**，浏览器会打开用于填写API密钥和连接码的设置页面。
+
+1. [将机器人安装到Discord服务器](https://discord.com/oauth2/authorize?client_id=1557261995215028254)，需要管理服务器权限。
+2. **[下载个人连接程序 · Windows x64 ZIP](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.2/zenless-discord-runner-0.3.2-win-x64.zip)**。在发布页面手动选择时，下载**Assets → zenless-discord-runner-0.3.2-win-x64.zip**。**Source code (zip)**是开发者用源码，不是可直接运行的PC安装包。
+3. **完整解压**ZIP，再运行解压目录中的**Start.cmd**（隐藏扩展名时显示为**Start**）。请勿直接在ZIP内运行，已包含Node.js。
+4. 在设置页面**输入自己的API密钥 → 保存API密钥及设置**。在Discord运行**/zzz connect**，将收到的连接码输入设置页面，再点击**连接机器人 → 启动翻译连接**。
+5. 在Discord使用**/zzz link**把不同语言频道加入同一组，详见[完整频道设置指南](README-zh-CN.md#windows电脑)。
+
+**在自己的Oracle或VPS运行：** 请参照[服务器安装及管理页面说明](HOSTING.md#简体中文)。若已经安装，应打开该服务器的管理界面。翻译时需保持安装位置的PC程序或服务器进程运行。
 
 [安装机器人](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [下载PC程序](https://github.com/Odarom/zenless-discord-translator/releases/latest) · [使用条款](TERMS.md) · [隐私政策](PRIVACY.md)
 
@@ -59,3 +69,8 @@ PC用户从解压目录再次运行**Start.cmd**即可打开设置；若程序�
 个人服务器用户应使用[SSH私有管理界面](HOSTING.md#several-servers-and-private-management-ui)，不要另行启动PC连接程序。每次管理时建立SSH隧道并打开服务器当前的私人管理链接。127.0.0.1指当前使用的PC，仅收藏该地址无法从另一台PC访问服务器。
 
 更换密钥：**选择服务器配置 → 密钥输入框旁“停止以修改设置” → 输入密钥 → 保存API密钥及设置 → 启动翻译连接**。密钥留空则保留原密钥，其他配置继续运行。**立即检查更新**仅检查数据库，不调用翻译API；按钮下方显示检查中、已是最新、更新完成或失败。
+
+
+## 支持的语言
+
+翻译支持韩语、英语、日语、简体/繁体中文、德语、法语、西班牙语、葡萄牙语、俄语、泰语、越南语和印尼语，共13种语言。界面及说明保留原有4种语言。为1,868个既有概念关联额外9种语言的16,802个名称，排除10个测试占位值，不编造缺失名称。新增及未发布术语须确认正式实装后再审核。安装本次程序更新后，同一13种语言内的名称补充和修正可通过DB更新接收；增加新语言代码仍需程序更新。
