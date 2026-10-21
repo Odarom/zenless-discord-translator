@@ -6,6 +6,10 @@
 
 [README](README-ko.md)
 
+### 이미지 전달
+
+이미지는 메시지당 최대 10개, 합계 20MB까지 원본 그대로 전달합니다. 해상도를 줄이거나 자동 압축하지 않습니다. 서버에서는 잠깐 메모리에 보관해 전송하고 이미지 파일을 디스크에 저장하지 않습니다. 이미지·GIF만 있는 메시지는 번역 API를 호출하지 않습니다. Discord에서 파일 자체를 허용하지 않거나 원본이 삭제된 경우에는 전달하지 못할 수 있습니다.
+
 ### 현시점 무료 API 추천
 
 **2026-10-19 한국시간 기준**, [Google AI Studio에서 무료 키 발급](https://aistudio.google.com/apikey) 후 **Gemini 3.1 Flash-Lite** / **gemini-3.1-flash-lite**를 추천합니다. [공식 요금표](https://ai.google.dev/gemini-api/docs/pricing)에 무료 구간이 있으며 해당 계정·프로젝트의 제공 조건과 RPM·TPM·일일 한도 안에서 무료로 사용할 수 있습니다. 모델 접근 권한·결제 설정·데이터 처리 조건은 [공식 약관](https://ai.google.dev/gemini-api/terms)과 계정 화면을 확인하세요. 무료가 무제한이나 영구 제공을 뜻하지는 않습니다. OpenAI API 또는 본인 기기의 Ollama 로컬 모델도 선택할 수 있습니다.
@@ -61,6 +65,10 @@ PC에서는 압축을 풀었던 폴더의 **Start.cmd**를 다시 실행하면 �
 
 [README](README-en.md)
 
+### Image sharing
+
+Share up to 10 images per message, totaling 20MB, without resizing or recompression. The server holds the data temporarily in memory for delivery and does not save image files to disk. Image/GIF-only messages make no translation API calls. Delivery can still fail if Discord rejects the attachment or its source was deleted.
+
 ### Current free API recommendation
 
 **As of 2026-10-19 KST**, get a [Google AI Studio API key](https://aistudio.google.com/apikey) and use **Gemini 3.1 Flash-Lite (gemini-3.1-flash-lite)**. The [official pricing page](https://ai.google.dev/gemini-api/docs/pricing) lists a free tier. Use can be free within your account/project eligibility and RPM, TPM and daily quotas. Check billing, model access and [data-use terms](https://ai.google.dev/gemini-api/terms); free does not mean unlimited or permanent. OpenAI API and locally installed Ollama models are alternatives.
@@ -114,6 +122,10 @@ Translation supports 13 languages: Korean, English, Japanese, Simplified/Traditi
 
 [README](README-ja.md)
 
+### 画像の共有
+
+1メッセージにつき最大10枚、合計20MBまで、縮小・再圧縮せず元の画像を共有します。サーバーでは送信中だけメモリーに保持し、画像ファイルをディスクに保存しません。画像・GIFのみの投稿では翻訳APIを呼び出しません。Discordが添付を許可しない場合や元画像が削除された場合は送信できないことがあります。
+
 ### 現時点の無料APIの推奨
 
 **2026-10-19韓国時間時点**では、[Google AI Studioでキーを発行](https://aistudio.google.com/apikey)し、**Gemini 3.1 Flash-Lite (gemini-3.1-flash-lite)**を推奨します。[公式料金表](https://ai.google.dev/gemini-api/docs/pricing)に無料枠があります。アカウント・プロジェクトの条件とRPM・TPM・日次上限内なら無料利用できます。[データ処理条件](https://ai.google.dev/gemini-api/terms)・課金設定・モデルの利用権限を確認してください。無制限・永続的な無料提供ではありません。OpenAI APIや自分の端末のOllamaも選べます。
@@ -166,6 +178,10 @@ PCでは展開先の**Start.cmd**をもう一度実行します。起動済み�
 ## 简体中文
 
 [README](README-zh-CN.md)
+
+### 图片分享
+
+每条消息最多分享10张图片，合计20MB，不缩小或重新压缩。服务器仅在转发期间临时保留内存数据，不将图片文件保存到磁盘。只有图片或GIF的消息不会调用翻译API。如果Discord拒绝附件或原图已被删除，仍可能无法转发。
 
 ### 当前可免费使用的API推荐
 

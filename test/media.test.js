@@ -26,10 +26,32 @@ test('private/foreign URL, oversized metadata and too many images are blocked be
 });
 
 test('claimed-small images cannot exceed the streamed total; failed/empty downloads never publish', async () => {
-  await assert.rejects(() => downloadImages([image], async () => new Response(new Uint8Array(MAX_IMAGE_BYTES + 1))), /10MB/);
+  await assert.rejects(() => downloadImages([image], async () => new Response(new Uint8Array(MAX_IMAGE_BYTES + 1))), /20MB/);
   await assert.rejects(() => downloadImages([image], async () => new Response('secret-body', { status: 403 })), error => error instanceof UserError && !error.message.includes('secret-body'));
   await assert.rejects(() => downloadImages([image], async () => new Response(new Uint8Array())), /비어/);
   await assert.rejects(() => downloadImages([image], async () => { throw new Error('secret-url'); }), error => error instanceof UserError && !error.message.includes('secret-url'));
+});
+
+test('4K images and multiple attachments up to 20 MiB retain their original bytes', async () => {
+  const sizes=[12*1024*1024,8*1024*1024];let calls=0;
+  const files=await downloadImages(sizes.map((size,i)=>({...image,id:String(i),size,width:3840,height:2160})),async()=>{
+    const size=sizes[calls++];const bytes=new Uint8Array(size);bytes[0]=17;bytes[size-1]=29;
+    return new Response(bytes,{headers:{'content-length':String(size)}});
+  });
+  assert.equal(calls,2);assert.equal(files.reduce((n,f)=>n+f.attachment.length,0),20*1024*1024);
+  for(const[file,i]of files.map((f,i)=>[f,i])){assert.equal(file.name,image.name);assert.equal(file.attachment.length,sizes[i]);assert.equal(file.attachment[0],17);assert.equal(file.attachment.at(-1),29);}
+  await assert.rejects(()=>downloadImages(sizes.map((size,i)=>({...image,id:String(i),size:size+(i===1?1:0)})),()=>assert.fail('Oversize metadata must not fetch')),/20MB/);
+});
+
+test('inaccurate content lengths neither expose unused bytes nor bypass the total limit', async () => {
+  const body=new Uint8Array([1,2,3,4,5]);
+  for(const declared of ['2','10']){
+    const files=await downloadImages([{...image,size:5}],async()=>new Response(body,{headers:{'content-length':declared}}));
+    assert.deepEqual(files[0].attachment,Buffer.from(body));
+  }
+  let cancelled=false;
+  await assert.rejects(()=>downloadImages([image],async()=>new Response(new ReadableStream({cancel(){cancelled=true;}}),{headers:{'content-length':String(MAX_IMAGE_BYTES+1)}})),/20MB/);
+  assert.equal(cancelled,true);
 });
 
 test('only source images are selected; forwards use snapshots and image revisions ignore signed URL refresh', () => {
