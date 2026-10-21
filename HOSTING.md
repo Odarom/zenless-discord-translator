@@ -81,7 +81,7 @@ PC UI는 키를 해당 기기에서 암호화합니다. 개인 서버 관리자�
 
 중계 봇은 루프백 4322 포트를 사용합니다. HTTPS 역방향 프록시에서 /api/runner/*를 127.0.0.1:4322로 전달합니다. 연결 정보·원문 작업·결과만 중계하고 제공사 키는 각 개인 프로그램에 둡니다. Discord 서버마다 연결 프로그램 하나를 연결합니다. 독립 운영자는 자신의 개인정보 처리방침을 게시하고 Discord·API 업체의 조건을 확인해야 합니다.
 
-PROJECT_REPORT_SHARING=on은 작성자가 별도 미리보기·동의 후 최소화한 신고를 프로젝트 관리자에게 공유하게 합니다. 프로젝트 관리자가 운영하는 공용 봇은 로컬 신고가 이미 관리자에게 도착하므로 off를 사용합니다. 신고는 공개 목록에 표시되거나 자동 반영되지 않습니다.
+PROJECT_REPORT_SHARING=on을 사용하면 신고자가 내용을 작성하고 전송 미리보기에 동의한 뒤 프로젝트 관리자에게 바로 보냅니다. 공용 봇·독립 설치본 모두 같은 흐름이며 별도 운영자 접수 단계는 없습니다. off는 프로젝트 신고 기능을 비활성화하며 로컬 운영자 접수로 대체하지 않습니다. 신고는 공개 목록에 표시되거나 자동 반영되지 않습니다.
 
 기존 API_MODE=server는 키를 운영자가 복호화하여 직접 API를 호출합니다. **본인 설치에서 자기 키만 쓰는 개인 용도**로 한정하고 다른 사용자의 키 수집에 사용하지 마세요.
 
@@ -165,7 +165,7 @@ Copy `.env.example` to `.env`, enter your own Discord token and Application ID, 
 
 The broker listens on loopback port 4322. Configure your HTTPS reverse proxy to send `/api/runner/*` to `127.0.0.1:4322`. The public bot accepts pairing metadata, chat work and results; provider keys stay on personal runners. Connect one runner per guild. Independent operators must publish their own privacy policy and comply with Discord/provider terms.
 
-`PROJECT_REPORT_SHARING=on` offers report authors a separate consent/preview before forwarding a minimized report to the project maintainer. A broker already operated by the project maintainer uses `PROJECT_REPORT_SHARING=off`, since its local reports already reach that maintainer. Reports are not publicly listed or automatically applied.
+`PROJECT_REPORT_SHARING=on` enables direct project reporting after the author reviews and explicitly consents to the outgoing contents. Public brokers and independent bots use the same flow, with no separate operator intake. Setting it to off disables project reports; it does not fall back to local-operator intake. Reports are neither publicly listed nor automatically applied.
 
 Legacy `API_MODE=server` directly calls providers and lets the host decrypt submitted keys. Restrict it to a personal installation using **only your own keys**. Do not use it to collect other users' credentials.
 
@@ -250,7 +250,7 @@ PC UIは端末内でキーを暗号化します。その個人サーバーの管
 
 中継ボットはループバック4322で待ち受けます。HTTPSリバースプロキシで/api/runner/*を127.0.0.1:4322へ転送します。接続情報・チャット処理・結果を扱い、提供元のキーは個人プログラムに残します。Discordサーバーごとに1接続を使用してください。独立運営者は自分のプライバシーポリシーを公開し、DiscordとAPI提供元の条件を確認してください。
 
-PROJECT_REPORT_SHARING=onでは、投稿者が別途プレビューと同意を行った場合に限り、必要最小限の報告をプロジェクト管理者へ転送します。プロジェクト管理者自身の公開ボットはローカル報告が直接届くのでoffにします。報告の公開一覧や自動反映はありません。
+PROJECT_REPORT_SHARING=onでは、投稿者が内容を作成し、送信プレビューに同意した後にプロジェクト管理者へ直接送ります。公開ボットも独立版も同じ流れで、ボット運営者への別途受付はありません。offは報告機能を無効にし、ローカル運営者受付には切り替えません。報告の公開一覧や自動反映はありません。
 
 従来のAPI_MODE=serverは運営者がキーを復号してAPIを直接呼び出します。**自分の設置環境で自分のキーを使う個人用途**に限定し、他人のキーを収集しないでください。
 
@@ -335,6 +335,6 @@ PC UI在设备内加密保存密钥；该个人服务器的管理员能够解密
 
 中转程序监听回环4322端口。配置HTTPS反向代理，将/api/runner/*转发至127.0.0.1:4322。机器人中转连接信息、聊天任务与结果，提供商密钥保留在个人程序。每个Discord服务器配对一个连接程序。独立运营者应发布自己的隐私政策并核对Discord及API服务条款。
 
-PROJECT_REPORT_SHARING=on仅在作者另行预览并同意后，将最小化举报转交项目维护者。项目维护者自己的公开机器人使用off，因为本地举报已直接到达维护者。举报不公开列出，也不会自动应用。
+PROJECT_REPORT_SHARING=on启用直接项目举报：作者填写内容、确认预览并同意后直接交给项目维护者。公开机器人与独立安装使用同一流程，不设机器人运营者接收步骤。off禁用项目举报，不改为本地运营者接收。举报不公开列出，也不会自动应用。
 
 旧版API_MODE=server由运营者解密密钥并直接调用API。仅限**自己部署并使用自己密钥的个人用途**，不要用于收集其他人的密钥。

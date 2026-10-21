@@ -35,7 +35,7 @@ pair에서 Discord의 /zzz connect 코드를 입력합니다. [HOSTING.md](HOSTI
 - PC와 개인 서버 모두 실행 시와 **6시간마다** [공용 번역 DB](https://github.com/Odarom/zenless-translation-database)를 자동 갱신합니다. 해시·크기·형식 확인 후 교체하며, 실패하면 마지막 정상 DB를 유지합니다. DB 갱신과 프로그램 코드 업데이트는 별도입니다.
 - 채팅은 본문·답장·최근 문맥에서 명칭과 별칭을 검색해 관련 후보 최대 30개를 같은 번역 요청에 넣습니다. 후보 검색에 별도 LLM 요청을 쓰지 않습니다. 긴 표기·약어·동음이의어의 구분 규칙도 함께 제공합니다.
 - 번역 메시지에 답장으로 **!신고** 또는 **!report** → **신고 시작**, 또는 메시지의 **앱 → 오역 신고**를 선택합니다. 신고 전 안내를 확인하고 원문·번역·설명을 제출하면 프로젝트 관리자가 비공개로 검토합니다. GitHub 로그인은 필요 없습니다.
-- 본인 신고: **/zzz-report mine**, **/zzz-report status id:접수번호**. 별도로 자기 봇을 설치한 경우에는 로컬 접수 후 **프로젝트 관리자에게도 공유**를 선택하고 전송 미리보기에 동의해야 공용 프로젝트로 전달됩니다.
+- 신고 작성 후 전송 미리보기를 확인하고 **동의하고 보내기**를 누르면 프로젝트 관리자에게 바로 전달됩니다. 별도 봇 운영자 접수 단계는 없습니다. 취소하면 전송하지 않습니다. **/zzz-report mine**, **/zzz-report status**는 이 봇의 전송 기록을 보여주며 프로젝트 접수번호도 표시합니다.
 - 신고에 개인정보·키·일반 대화 전체를 넣지 마세요. 보관 기간은 최대 90일이며, 관리자 검토 후 공용 DB를 수정합니다. 제출만으로 자동 수정하거나 AI를 자동 호출하지 않습니다.
 
 연결 확인은 /zzz api-status, 해제는 /zzz disconnect, 그룹 일시 정지는 /zzz pause 및 /zzz resume을 사용합니다. 사용량은 PC 화면이나 개인 서버의 node --env-file=.env.runner scripts/discord-runner.mjs usage로 확인합니다. 실패한 API 요청도 사용량에 포함됩니다. 중계 연결이 끊겨도 이미 시작된 번역을 자동 재호출하지 않습니다.
@@ -94,7 +94,7 @@ Enter the code from /zzz connect when pairing. [HOSTING.md](HOSTING.md) includes
 - Both PC and server check the [shared database](https://github.com/Odarom/zenless-translation-database) at startup and every **6 hours**, verifying hash/size/format before replacing the cache. Failures retain the last working version. Database updates are separate from program-code updates.
 - Chat uses deterministic name/alias matching on the message, reply and recent context, with up to 30 relevant candidates in the same translation call. No separate LLM call selects terms.
 - Reply to a translated message with **!report**, then **Start report**, or use its **Apps → Report translation** menu. Read the notice before submitting. The project maintainer privately reviews submitted source, translation and explanation. No GitHub login is needed.
-- View local reports with **/zzz-report mine** and **/zzz-report status**. Independently self-hosted bots offer a separate **Share with project maintainer** preview and confirmation before forwarding.
+- After writing a report, review the outgoing contents and choose **Agree and send** to send directly to the project maintainer. There is no separate bot-operator intake. Cancelling sends nothing. **/zzz-report mine** and **/zzz-report status** show this bot’s delivery records and the project receipt.
 - Exclude credentials, personal information and unrelated conversation. Reports are kept up to 90 days. Only reviewed corrections reach the shared DB; reporting does not call AI or change translations automatically.
 
 Use /zzz api-status to check pairing, /zzz disconnect to revoke it, and /zzz pause or resume for channel groups. Usage is shown in the PC app or with node --env-file=.env.runner scripts/discord-runner.mjs usage. Failed API calls count. A lost broker connection never automatically repeats an already-started translation.
@@ -151,7 +151,7 @@ pairでは/zzz connectのコードを入力します。再起動後の自動実�
 - PC・サーバーとも、起動時と**6時間ごと**に[共通DB](https://github.com/Odarom/zenless-translation-database)を更新します。サイズ・ハッシュ・形式を確認してから置換し、失敗時は最後の正常なDBを維持します。プログラム本体の更新とは別です。
 - チャットでは本文・返信・直近の文脈から名称・別名を検索し、最大30候補を同じ翻訳リクエストに含めます。検索用の追加LLMリクエストはありません。
 - 訳文に**!report**と返信し**報告を開始**、または**アプリ → 誤訳を報告**を選択します。案内を確認して送信すると、原文・訳文・説明をプロジェクト管理者が非公開で確認します。GitHubログインは不要です。
-- 自分の報告は**/zzz-report mine**と**/zzz-report status**で確認します。独立した自己ホスト版では、ローカル受付後に**プロジェクト管理者にも共有**を選択し、プレビューに同意した場合のみ転送します。
+- 報告作成後に送信内容を確認し、**同意して送信**を押すとプロジェクト管理者へ直接届きます。ボット運営者への別途受付はありません。キャンセル時は送信しません。**/zzz-report mine**と**/zzz-report status**はこのボットの送信記録とプロジェクト受付番号を表示します。
 - キー・個人情報・無関係な会話を含めないでください。報告は最大90日保存し、管理者確認後にDBへ反映します。報告だけで自動修正・AI呼び出しはしません。
 
 接続確認は/zzz api-status、解除は/zzz disconnect、グループ停止・再開は/zzz pause・resumeです。使用量はPC画面かnode --env-file=.env.runner scripts/discord-runner.mjs usageで確認します。失敗したAPI呼び出しも含みます。中継接続が切れても開始済みの翻訳を自動で繰り返しません。
@@ -208,7 +208,7 @@ pair时输入/zzz connect的连接码。重启后自动运行请参见[HOSTING.m
 - 电脑和服务器均在启动时及**每6小时**自动更新[共享数据库](https://github.com/Odarom/zenless-translation-database)。校验哈希、大小和格式后才替换缓存，失败时保留上次可用版本。数据库更新与程序代码更新不同。
 - 聊天通过规则匹配正文、回复和近期上下文中的名称及别名，在同一次翻译请求中附带最多30个相关候选。检索术语不会额外调用LLM。
 - 回复译文并发送**!report**，点击**开始举报**，或选择消息菜单的**应用 → 举报误译**。阅读提示后提交原文、译文及说明，由项目维护者私下审核，无需GitHub登录。
-- 使用**/zzz-report mine**和**/zzz-report status**查看自己的举报。独立自托管版本会先本地保存，只有选择**也分享给项目维护者**并同意预览后才转发。
+- 填写举报后确认发送内容，点击**同意并发送**即可直接交给项目维护者，无需先交给机器人运营者。取消则不发送。**/zzz-report mine**与**/zzz-report status**显示本机器人的发送记录及项目接收编号。
 - 请勿提交密钥、个人信息或无关完整对话。最多保留90天，经维护者审核后更新共享数据库，不会因举报而自动修改译文或调用AI。
 
 使用/zzz api-status确认连接、/zzz disconnect断开、/zzz pause及resume暂停或恢复分组。用量可在PC界面或运行node --env-file=.env.runner scripts/discord-runner.mjs usage查看，包含失败的API请求。中转连接中断后不会自动重复已启动的翻译。
