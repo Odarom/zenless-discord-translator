@@ -50,21 +50,24 @@ export async function handleCommand(interaction, { store, config, relay, client,
     return status.configured ? `이 서버의 번역 설정: ${status.provider}\n모델: ${status.model}\n하루 최대 ${status.dailyLimit}회 / 설정 위치: ${status.source}\n키는 표시하지 않습니다. 등록 상태이며 실제 연결·무료 한도는 별도 확인이 필요합니다.` : '이 서버의 API가 미설정 또는 삭제된 상태입니다. /zzz api-set으로 등록하세요.';
   }
   if (sub === 'link') {
+    if (!interaction.guild) throw new UserError('봇이 이 서버에 설치되어 있지 않거나 아직 서버에 연결되지 않았습니다. 봇 초대 링크에서 「서버에 추가」로 설치한 뒤 다시 실행하세요. 개인 계정에 앱을 추가하는 것만으로는 채널을 연결할 수 없습니다.');
     const channel = interaction.options.getChannel('channel', true);
     const name = interaction.options.getString('group', true);
     const language = interaction.options.getString('language', true);
     if (channel.type !== ChannelType.GuildText || channel.guildId !== interaction.guildId) throw new UserError('이 서버의 일반 텍스트 채널을 선택하세요.');
     store.validateLink(interaction.guildId, name, channel.id, language);
     const me = await interaction.guild.members.fetchMe();
-    const needed = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.ManageWebhooks];
-    if (!channel.permissionsFor(me)?.has(needed)) throw new UserError('봇에 채널 보기·메시지 보내기·메시지 기록 보기·웹훅 관리 권한이 필요합니다.');
+    const needed = [['채널 보기', PermissionFlagsBits.ViewChannel], ['메시지 보내기', PermissionFlagsBits.SendMessages], ['메시지 기록 보기', PermissionFlagsBits.ReadMessageHistory], ['웹후크 관리', PermissionFlagsBits.ManageWebhooks]];
+    const permissions = channel.permissionsFor(me);
+    const missing = needed.filter(([, permission]) => !permissions?.has(permission)).map(([name]) => name);
+    if (missing.length) throw new UserError(`선택한 채널에서 봇에 부족한 권한: ${missing.join('·')}. 채널 편집 → 권한에서 봇 역할에 허용하세요. 서버 역할에 허용되어 있어도 채널별 설정에서 제한될 수 있습니다.`);
     const hooks = await channel.fetchWebhooks();
     let hook = hooks.find(h => h.owner?.id === client.user.id && h.name === 'ZZZ Translator' && h.token);
     if (!hook) hook = await channel.createWebhook({ name: 'ZZZ Translator', reason: '젠레스 번역 채널 연결' });
     const group = store.link(interaction.guildId, name, channel.id, language, hook.id);
     relay.forgetGroup(group.key);
     const status = translator.status(interaction.guildId);
-    return `연결 완료: **${name}** / <#${channel.id}> / ${LANGUAGES[language]}\n${group.channels.length < 2 ? '다른 언어 채널을 하나 더 연결하세요.' : '언어 채널 연결이 준비되었습니다.'}\n${broker ? '개인 번역 프로그램 연결: /zzz connect. 연결된 기기로 원문·문맥을 전달합니다.' : !status.configured ? '번역하려면 /zzz api-set으로 이 서버의 API를 먼저 등록하세요.' : `새 텍스트와 최근 문맥을 ${status.provider === 'ollama' ? '봇 PC의 로컬 AI에서 처리' : `${status.provider} API로 전송`}합니다.`} 채널 공개 범위는 Discord에서 직접 설정하세요.`;
+    return `연결 완료: **${name}** / <#${channel.id}> / ${LANGUAGES[language]}\n번역 방식: ${group.translationMode === 'general' ? '일반 번역 (게임 DB 미사용)' : '게임 번역 (기본 · 젠레스 DB 사용)'}\n${group.channels.length < 2 ? '다른 언어 채널을 하나 더 연결하세요.' : '언어 채널 연결이 준비되었습니다.'}\n${broker ? '개인 번역 프로그램 연결: /zzz connect. 연결된 기기로 원문·문맥을 전달합니다.' : !status.configured ? '번역하려면 /zzz api-set으로 이 서버의 API를 먼저 등록하세요.' : `새 텍스트와 최근 문맥을 ${status.provider === 'ollama' ? '봇 PC의 로컬 AI에서 처리' : `${status.provider} API로 전송`}합니다.`} 채널 공개 범위는 Discord에서 직접 설정하세요.`;
   }
   if (sub === 'unlink') {
     const channel = interaction.options.getChannel('channel', true);
@@ -79,6 +82,16 @@ export async function handleCommand(interaction, { store, config, relay, client,
     if (sub === 'pause') relay.forgetGroup(store.group(interaction.guildId, name).key);
     return `${name}: ${sub === 'pause' ? '번역을 중지했습니다.' : '번역을 다시 시작했습니다.'}`;
   }
+  if (sub === 'mode') {
+    const name = interaction.options.getString('group', true);
+    const mode = interaction.options.getString('mode', true);
+    if (mode === 'general' && broker && !broker.status(interaction.guildId).translationModes?.includes('general')) {
+      throw new UserError('일반 번역을 사용하려면 개인 번역 연결 프로그램을 0.3.5 이상으로 업데이트하고 번역 연결을 시작하세요. 기존 게임 번역은 그대로 사용할 수 있습니다.');
+    }
+    const group = store.setTranslationMode(interaction.guildId, name, mode);
+    relay.forgetGroup(group.key);
+    return `**${name}**: ${mode === 'general' ? '일반 번역 (게임 DB 미사용)' : '게임 번역 (젠레스 DB 사용)'}으로 설정했습니다. 다음 새 메시지부터 적용되며 기존 번역은 유지됩니다. API 키·모델·사용 한도는 그대로 사용합니다.`;
+  }
   if (sub === 'usage') {
     if (broker) return runnerText(interaction.locale, 'usage');
     const usage = store.scoped(interaction.guildId).usage();
@@ -86,7 +99,7 @@ export async function handleCommand(interaction, { store, config, relay, client,
     return `**${seoulDay()} (서울 시간) · 이 서버 사용량**\nAI 요청: ${usage.requests} / ${status.configured ? status.dailyLimit : '미설정'}회\n입력 토큰: ${usage.inputTokens.toLocaleString()} / 출력 토큰: ${usage.outputTokens.toLocaleString()}\n현재 방식: ${status.configured ? `${status.provider} / ${status.model}` : '미설정'}\n실패한 요청도 횟수에 포함합니다. ${status.provider === 'ollama' ? '현재 로컬 번역에는 API 요금이 없습니다.' : '요청 횟수 한도는 금액 한도가 아닙니다. 무료 사용 여부·요금은 해당 API 프로젝트에서 확인하세요.'}`;
   }
   const groups = store.groups(interaction.guildId);
-  return groups.length ? groups.map(g => `**${g.name}** · ${g.paused ? '중지' : g.channels.length >= 2 ? '작동' : '채널 추가 필요'}\n${g.channels.map(c => `<#${c.id}> → ${LANGUAGES[c.language]}`).join('\n')}`).join('\n\n').slice(0, 1900) : '연결된 채널이 없습니다. /zzz link로 연결하세요.';
+  return groups.length ? groups.map(g => `**${g.name}** · ${g.paused ? '중지' : g.channels.length >= 2 ? '작동' : '채널 추가 필요'} · ${g.translationMode === 'general' ? '일반 번역 (DB 미사용)' : '게임 번역 (기본)'}\n${g.channels.map(c => `<#${c.id}> → ${LANGUAGES[c.language]}`).join('\n')}`).join('\n\n').slice(0, 1900) : '연결된 채널이 없습니다. /zzz link로 연결하세요.';
 }
 
 export async function respondToCommand(interaction, dependencies, queue) {

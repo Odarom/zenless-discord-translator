@@ -13,6 +13,7 @@ export function runnerMetadata(input) {
   const result = { provider: input.provider, model: input.model, dailyLimit: input.dailyLimit };
   for (const key of ['glossaryHash', 'promptHash']) if (/^[a-f0-9]{64}$/.test(input[key] || '')) result[key] = input[key];
   if (['community', 'official'].includes(input.style)) result.style = input.style;
+  if (Array.isArray(input.translationModes) && input.translationModes.length && input.translationModes.length <= 2 && input.translationModes.every(mode => ['game', 'general'].includes(mode)) && new Set(input.translationModes).size === input.translationModes.length) result.translationModes = [...input.translationModes];
   return result;
 }
 export function runnerInput(input) {
@@ -21,8 +22,10 @@ export function runnerInput(input) {
   if (!Array.isArray(input?.targets) || !input.targets.length || input.targets.length > 4 || new Set(input.targets).size !== input.targets.length) throw new Error('Invalid runner targets');
   const context = input.context ?? [];
   if (!Array.isArray(context) || context.length > 10) throw new Error('Invalid runner context');
+  if (input.translationMode !== undefined && !['game', 'general'].includes(input.translationMode)) throw new Error('Invalid translation mode');
   const speakers = new Map();
   return { text: text(input.text, 2000), sourceLanguage: lang(input.sourceLanguage), targets: input.targets.map(lang),
+    ...(input.translationMode !== undefined ? { translationMode: input.translationMode } : {}),
     context: context.map(row => {
       if (!speakers.has(row.speaker)) speakers.set(row.speaker, `speaker${speakers.size + 1}`);
       return { speaker: speakers.get(row.speaker), language: lang(row.language), text: text(row.text, 800) };
@@ -59,7 +62,9 @@ export class RunnerBroker {
   cancel(guildId) { for (const [id, job] of this.jobs) if (job.guildId === guildId) { clearTimeout(job.timer); job.reject(new UserError('개인 번역 연결이 변경되어 요청을 취소했습니다.')); this.jobs.delete(id); } }
   disconnect(guildId) { this.db.prepare('DELETE FROM runners WHERE guild_id=?').run(guildId); this.seen.delete(guildId); this.cancel(guildId); for (const [key, value] of this.codes) if (value.guildId === guildId) this.codes.delete(key); }
   translate(guildId, input) {
-    if (!this.status(guildId).online) return Promise.reject(new UserError('개인 번역 프로그램이 꺼져 있습니다. 연결된 PC·서버에서 실행하세요.'));
+    const status = this.status(guildId);
+    if (!status.online) return Promise.reject(new UserError('개인 번역 프로그램이 꺼져 있습니다. 연결된 PC·서버에서 실행하세요.'));
+    if (input.translationMode === 'general' && !status.translationModes?.includes('general')) return Promise.reject(new UserError('일반 번역을 사용하려면 개인 번역 연결 프로그램을 0.3.5 이상으로 업데이트하고 번역 연결을 시작하세요.'));
     if (this.jobs.size >= 100 || [...this.jobs.values()].some(j => j.guildId === guildId)) return Promise.reject(new UserError('개인 번역 요청이 처리 중입니다. 잠시 후 다시 보내세요.'));
     const payload = runnerInput(input), id = token();
     return new Promise((resolve, reject) => {
@@ -70,7 +75,13 @@ export class RunnerBroker {
   poll(guildId, metadata) {
     const clean = runnerMetadata(metadata); this.db.prepare('UPDATE runners SET metadata=? WHERE guild_id=?').run(JSON.stringify(clean), guildId); this.seen.set(guildId, this.now());
     const job = [...this.jobs.values()].find(j => j.guildId === guildId && !j.claimed);
-    if (!job) return null; job.claimed = true; return { id: job.id, input: job.payload };
+    if (!job) return null;
+    if (job.payload.translationMode === 'general' && !clean.translationModes?.includes('general')) {
+      clearTimeout(job.timer); this.jobs.delete(job.id);
+      job.reject(new UserError('일반 번역을 사용하려면 개인 번역 연결 프로그램을 0.3.5 이상으로 업데이트하고 번역 연결을 시작하세요.'));
+      return null;
+    }
+    job.claimed = true; return { id: job.id, input: job.payload };
   }
   complete(guildId, data) {
     const job = this.jobs.get(data?.id); if (!job || job.guildId !== guildId || !job.claimed) return { accepted: false };

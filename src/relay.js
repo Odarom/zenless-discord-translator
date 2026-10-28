@@ -77,6 +77,7 @@ export class Relay {
     if (!route || route.group.guildId !== message.guildId || route.group.paused) return;
     const { group, source } = route;
     const existing = this.store.record(message.id);
+    const translationMode = (edited ? existing?.translationMode : group.translationMode) ?? 'game';
     if (existing && !edited) return;
     if (edited && !existing) return; // Never backfill messages sent before the bot was linked.
     if (existing && existing.groupKey !== group.key) return; // Don't move old messages into a newly linked conversation.
@@ -100,8 +101,10 @@ export class Relay {
     const info = translated ? this.reviewInfo(message.guildId) : {};
     const review = { translated, sourceLanguage: source.language, sourceTextHash: reviewHash(text), translatedAt: this.now() };
     for (const key of ['provider', 'model', 'style', 'glossaryHash', 'promptHash']) if (typeof info[key] === 'string') review[key] = info[key];
+    if (translationMode === 'general') { review.style = 'general'; delete review.glossaryHash; }
     const translations = translated ? await this.translator.translate({
       guildId: message.guildId,
+      translationMode,
       text, sourceLanguage: source.language,
       targets: [...new Set(destinations.map(d => d.language))],
       context: context.map(({ speaker, language, text }) => ({ speaker, language, text })),
@@ -110,6 +113,7 @@ export class Relay {
     const record = existing ?? {
       id: message.id, groupKey: group.key, guildId: message.guildId,
       sourceChannelId: source.id, createdAt: this.now(), copies: {},
+      translationMode,
     };
     // Persist after every successful send so partial delivery never triggers a full replay.
     this.store.put(record);

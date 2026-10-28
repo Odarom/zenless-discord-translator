@@ -21,6 +21,7 @@ const words = {
   usage:['오늘 사용량','Today’s usage','今日の使用量','今日用量'],usageHelp:['실패한 API 요청도 포함합니다. 제공사의 무료·요금 한도와는 별도입니다.','Includes failed API calls. Separate from the provider’s free-tier and spending limits.','失敗したAPIリクエストも含みます。提供元の無料枠・料金上限とは別です。','包含失败的API请求，与提供商的免费额度及费用上限不同。'],keepOn:['번역하는 동안 이 프로그램이 실행되어야 합니다. 개인 서버에서는 화면 없이 실행할 수도 있습니다.','Keep this program running to translate. Your personal server can run it without a UI.','翻訳中はこのプログラムを実行してください。個人サーバーでは画面なしでも実行できます。','翻译期间需保持此程序运行，也可在个人服务器上无界面运行。'],guide:['사용 안내','Usage guide','使い方','使用指南'],
   savedKey:['저장된 키가 있습니다. 비워 두면 유지합니다.','A key is saved. Leave blank to keep it.','保存済みのキーがあります。空欄で維持します。','已有保存的密钥，留空即可保留。'],newKey:['본인의 API 키를 입력하세요.','Enter your own API key.','自分のAPIキーを入力してください。','请输入自己的API密钥。'],local:['로컬 AI는 API 키가 필요 없습니다.','Local AI needs no API key.','ローカルAIにAPIキーは不要です。','本地AI无需API密钥。'],
   running:['실행 중','Running','実行中','运行中'],stopped:['중지됨','Stopped','停止中','已停止'],paired:['디스코드 서버 연결됨','Discord server paired','Discordサーバー接続済み','已连接Discord服务器'],unpaired:['디스코드 서버 연결 필요','Pair your Discord server','Discordサーバーの接続が必要','请连接Discord服务器'],
+  settingsFirst:['API 키·모델을 입력하고 「API 키·설정 저장」을 먼저 누르세요. 그다음 연결 코드를 입력하고 「봇과 연결」을 누르세요.','Enter your API key and model, then save the API settings first. Next, enter the connection code and click Connect to bot.','APIキー・モデルを入力して、先に設定を保存してください。その後、接続コードを入力してボットに接続します。','请先填写API密钥和模型并保存设置，再输入连接码并点击连接机器人。'],
   connected:['봇과 통신 중','Connected to bot','ボットと通信中','正在与机器人通信'],connecting:['봇 연결 확인 중','Checking bot connection','ボット接続を確認中','正在确认机器人连接'],
   baseline:['포함된 용어집 사용 · 실행하면 자동 갱신','Bundled glossary · updates when started','同梱の用語集・起動時に自動更新','使用内置术语表 · 启动后自动更新'],updated:['마지막 갱신','Last update','最終更新','上次更新'],requests:['요청','Requests','リクエスト','请求'],tokens:['입력 / 출력 토큰','Input / output tokens','入力 / 出力トークン','输入 / 输出Token'],done:['완료했습니다.','Done.','完了しました。','已完成。'],failed:['설정과 연결 코드를 확인하세요. 설정 변경 전에는 실행을 중지하세요.','Check your settings and pairing code. Stop the runner before changing settings.','設定と接続コードを確認してください。設定変更前に停止してください。','请检查设置和连接码，更改设置前请先停止运行。']
 };
@@ -67,7 +68,7 @@ function show(value) {
     $('profile').value = profileId;
   }
   $('running').textContent = t(value.running ? 'running' : 'stopped');
-  $('connectionState').textContent = t(value.running ? value.connected ? 'connected' : 'connecting' : value.paired ? 'paired' : 'unpaired');
+  $('connectionState').textContent = t(!value.configured ? 'settingsFirst' : value.running ? value.connected ? 'connected' : 'connecting' : value.paired ? 'paired' : 'unpaired');
   $('keyHint').textContent = t($('provider').value === 'ollama' ? 'local' : value.settings?.provider === $('provider').value && value.settings?.keySaved ? 'savedKey' : 'newKey');
   $('apiKey').disabled = $('provider').value === 'ollama';
   $('dbState').textContent = value.glossaryUpdatedAt ? t('updated') + ': ' + new Date(value.glossaryUpdatedAt).toLocaleString(locale) : t('baseline');

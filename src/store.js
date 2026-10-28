@@ -59,6 +59,14 @@ export class Store {
     group.paused = paused;
     this.save();
   }
+  setTranslationMode(guildId, name, mode) {
+    const group = this.group(guildId, name);
+    if (!group) throw new UserError('해당 대화 그룹이 없습니다. /zzz link로 채널을 먼저 연결하세요.');
+    if (!['game', 'general'].includes(mode)) throw new UserError('게임 번역 또는 일반 번역을 선택하세요.');
+    group.translationMode = mode;
+    this.save();
+    return group;
+  }
   usage(day = seoulDay()) { return this.data.usage[day] ?? { requests: 0, inputTokens: 0, outputTokens: 0 }; }
   scoped(guildId) {
     if (!guildId) throw new UserError('사용량을 기록할 서버가 없습니다.');

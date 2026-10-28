@@ -4,7 +4,7 @@
 
 Translate new messages between language channels. Run the personal runner on your PC or your own server using your own API key.
 
-**[① Install the Discord bot](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [② Download the PC runner · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.4/zenless-discord-runner-0.3.4-win-x64.zip)**
+**[① Install the Discord bot](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② Download the PC runner · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.5/zenless-discord-runner-0.3.5-win-x64.zip)**
 
 ## Windows PC
 
@@ -20,6 +20,23 @@ Translate new messages between language channels. Run the personal runner on you
 ~~~
 
 Keep the PC runner running while translating. Existing channel history is not translated retroactively.
+
+## Groups and translation modes
+
+A group links channels that exchange translations. Use the same group name for its language channels; identical names in different Discord servers remain separate.
+
+**Game translation with the ZZZ DB is the default**, including existing connections. Managers can switch each group independently. General translation sends neither the game DB nor game-specific instructions.
+
+~~~text
+/zzz mode group:friends mode:general
+/zzz mode group:friends mode:game
+~~~
+
+These select **General translation** and **Game translation**. Changes apply to new messages; existing translations remain. The same API key, model and limits are used; general translation still consumes API usage. Requires runner **0.3.5 or later**. Use **/zzz status** to check the current mode.
+
+For another server: **Add server → enter a display name → save API settings → enter that server's /zzz connect code → Pair with bot → Start translation**. The display name need not match Discord; the code identifies the actual server.
+
+If linking reports missing permissions, allow those permissions for the bot role in **Edit Channel → Permissions**. Channel overrides can restrict permissions granted during installation. Install the bot using **Add to server**.
 
 ## Report errors to improve translation quality
 

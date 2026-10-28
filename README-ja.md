@@ -4,7 +4,7 @@
 
 言語別チャンネルの新規メッセージを翻訳します。自分のPCまたは個人サーバーで接続プログラムを実行し、自分のAPIキーを使います。
 
-**[① Discordにボットを導入](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [② PC接続プログラムをダウンロード・Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.4/zenless-discord-runner-0.3.4-win-x64.zip)**
+**[① Discordにボットを導入](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② PC接続プログラムをダウンロード・Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.5/zenless-discord-runner-0.3.5-win-x64.zip)**
 
 ## Windows PC
 
@@ -20,6 +20,23 @@
 ~~~
 
 翻訳中はPC接続プログラムを起動したままにしてください。過去の投稿はさかのぼって翻訳しません。
+
+## グループと翻訳モード
+
+グループは翻訳をやり取りするチャンネルの組です。言語別チャンネルに同じグループ名を指定します。別のDiscordサーバーで同じ名前を使っても混ざりません。
+
+**初期設定はZZZ DBを使うゲーム翻訳**で、既存の接続も維持します。管理者がグループごとに切り替えられます。一般翻訳ではゲームDB・ゲーム専用の指示を送りません。
+
+~~~text
+/zzz mode group:friends mode:general
+/zzz mode group:friends mode:game
+~~~
+
+それぞれ**一般翻訳**・**ゲーム翻訳**を選びます。新しいメッセージから適用し、既存の訳文は維持します。APIキー・モデル・上限は共通で、一般翻訳にもAPI使用量が発生します。接続プログラム**0.3.5以降**が必要です。**/zzz status**で現在のモードを確認できます。
+
+別サーバーの追加は、**サーバー追加 → 表示名入力 → API設定保存 → 対象サーバーの/zzz connectコード入力 → ボットと接続 → 翻訳接続開始**の順です。表示名は実際のサーバー名と異なっていても構いません。接続コードが対象サーバーを決定します。
+
+権限不足が表示されたら、**チャンネル編集 → 権限 → ボットのロール**で指定の権限を許可してください。導入時の権限がチャンネル単位で制限される場合があります。ボットは**サーバーに追加**で導入します。
 
 ## 誤訳を報告して翻訳品質を改善する
 

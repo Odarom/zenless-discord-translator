@@ -4,7 +4,7 @@
 
 翻译不同语言频道中的新消息。在自己的电脑或个人服务器运行连接程序，并使用自己的API密钥。
 
-**[① 将机器人安装到Discord](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [② 下载PC连接程序 · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.4/zenless-discord-runner-0.3.4-win-x64.zip)**
+**[① 将机器人安装到Discord](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② 下载PC连接程序 · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.5/zenless-discord-runner-0.3.5-win-x64.zip)**
 
 ## Windows电脑
 
@@ -20,6 +20,23 @@
 ~~~
 
 翻译时需保持PC连接程序运行，不会补译历史消息。
+
+## 分组与翻译模式
+
+分组用于关联互相转发译文的频道，各语言频道使用相同组名。不同Discord服务器使用同一组名也不会混在一起。
+
+**默认为使用ZZZ数据库的游戏翻译**，现有连接保持不变。管理员可按组切换，普通翻译不发送游戏数据库或游戏专用指令。
+
+~~~text
+/zzz mode group:friends mode:general
+/zzz mode group:friends mode:game
+~~~
+
+分别选择**普通翻译**和**游戏翻译**。仅影响之后的新消息，保留已有译文。沿用API密钥、模型和限额，普通翻译同样消耗API用量。需要连接程序**0.3.5及以上版本**。用**/zzz status**查看当前模式。
+
+添加其他服务器时，依次**添加服务器 → 填写显示名称 → 保存API设置 → 输入目标服务器的/zzz connect连接码 → 连接机器人 → 启动翻译连接**。显示名称不必与Discord服务器名称相同，实际连接对象由连接码确定。
+
+如提示权限不足，请在**编辑频道 → 权限 → 机器人身份组**中允许所列权限。邀请时授予的权限仍可能被频道设置限制。请通过**添加至服务器**安装机器人。
 
 ## 举报误译，帮助改进翻译质量
 

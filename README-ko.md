@@ -4,7 +4,7 @@
 
 언어별 Discord 채널의 새 메시지를 번역합니다. 각자 PC 또는 개인 서버에서 연결 프로그램을 실행하고 본인 API 키를 사용합니다.
 
-**[① Discord 서버에 봇 설치](https://discord.com/oauth2/authorize?client_id=1557261995215028254) · [② PC 연결 프로그램 다운로드 · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.4/zenless-discord-runner-0.3.4-win-x64.zip)**
+**[① Discord 서버에 봇 설치](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② PC 연결 프로그램 다운로드 · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.5/zenless-discord-runner-0.3.5-win-x64.zip)**
 
 ## PC에서 사용하기
 
@@ -20,6 +20,23 @@
 ~~~
 
 번역하는 동안 PC 연결 프로그램을 켜 두세요. 과거 글은 소급 번역하지 않습니다.
+
+## 그룹과 번역 모드
+
+그룹은 서로 번역을 주고받을 채널 묶음입니다. 연결할 언어 채널에 같은 그룹명을 쓰세요. 다른 Discord 서버에서 같은 이름을 사용해도 섞이지 않습니다.
+
+**기본은 게임 번역(젠레스 DB 사용)**이며 기존 연결도 유지됩니다. 관리자는 그룹별로 전환할 수 있습니다. 일반 번역은 게임 DB·게임 전용 지시를 보내지 않습니다.
+
+~~~text
+/zzz mode group:friends mode:general
+/zzz mode group:friends mode:game
+~~~
+
+위에서 각각 **일반 번역**, **게임 번역**을 선택합니다. 새 메시지부터 적용되고 기존 번역은 유지됩니다. API 키·모델·한도는 그대로이며 일반 번역에도 API 사용량이 발생합니다. 개인 연결 프로그램 **0.3.5 이상**이 필요합니다. 현재 방식은 **/zzz status**로 확인합니다.
+
+새 서버를 추가할 때는 개인 번역 연결 창에서 **새 서버 추가 → 구분용 이름 입력 → API 키·설정 저장 → 해당 서버의 /zzz connect 코드 입력 → 봇과 연결 → 번역 연결 시작** 순서로 진행합니다. 구분용 이름은 실제 서버명과 달라도 되며, 연결 코드가 실제 서버를 결정합니다.
+
+채널 연결에 권한 안내가 나오면 **채널 편집 → 권한 → 봇 역할**에서 표시된 부족한 권한을 허용하세요. 초대 시 서버 역할에 허용한 권한도 채널별 설정에서 제한될 수 있습니다. 봇은 반드시 **서버에 추가**로 설치해야 합니다.
 
 ## 오역 신고로 번역 품질 개선하기
 
