@@ -1,19 +1,19 @@
-# ZZZ Discord Runner 0.3.5
+# ZZZ Discord Runner 0.3.6
 
 [한국어](README-ko.md) · [English](README-en.md) · [日本語](README-ja.md) · [简体中文](README-zh-CN.md)
 
 ## 한국어
 
-기본 게임 번역을 유지하면서 `/zzz mode`로 그룹별 일반 번역(DB 미사용)을 선택할 수 있습니다. 일반 번역에는 게임 전용 지시를 보내지 않습니다. 기존 키·모델·한도와 완료된 번역은 유지합니다. 구버전 연결 프로그램은 일반 모드 사용 전에 업데이트가 필요합니다. 서버 설치 누락과 채널별 부족한 권한을 구분해 안내하며, 새 프로필은 API 설정을 먼저 저장하도록 표시합니다.
+게임 번역에 요청한 언어와 실제 메시지·답장·문맥에 등장한 별칭만 전달해 불필요한 입력을 줄입니다. 같은 의미의 후보와 지정된 대표 번역, 조건·대상·캐릭터·스킬 문맥을 유지합니다. 공용 DB 조회 도구와 자료 구성 로직을 공유하며 추가 AI 요청은 없습니다. 일반 번역 방식과 API 키·프로필 설정은 유지합니다.
 
 ## English
 
-Keep game translation as the default and choose general translation without the game DB per group using `/zzz mode`. General mode sends no game-specific instructions. Existing keys, models, limits and completed translations are preserved. Older runners must update before using general mode. Setup now distinguishes a missing server install from missing channel permissions and explains saving API settings before pairing.
+Game translation sends requested languages and aliases observed in the message, reply or context, reducing unnecessary input. Competing candidates, selected outputs, conditions, scope and character/skill context are preserved. Prompt projection is shared with the public DB reader, without extra AI requests. General translation, API keys and profile settings remain supported.
 
 ## 日本語
 
-ゲーム翻訳を初期設定のまま維持し、`/zzz mode`でグループごとに一般翻訳（ゲームDBなし）を選べます。一般翻訳にはゲーム専用の指示を送りません。既存のキー・モデル・上限・完了済み訳文を保持します。旧接続プログラムは一般翻訳の利用前に更新が必要です。サーバー未導入とチャンネル権限不足を区別し、新規プロファイルのAPI設定保存手順を明示します。
+ゲーム翻訳では指定言語とメッセージ・返信・文脈に実際に現れた別名を送り、不要な入力を減らします。競合候補、指定訳語、条件・対象・キャラクター・スキルの文脈は維持します。公開DB読み取りツールと共通処理を使い、追加AI要求はありません。一般翻訳とAPIキー・プロファイル設定を保持します。
 
 ## 简体中文
 
-保留默认游戏翻译，可用`/zzz mode`为各组选择不使用游戏数据库的普通翻译；普通翻译不发送游戏专用指令。保留已有密钥、模型、限额及完成的译文。旧版连接程序需先更新才能使用普通翻译。区分未安装至服务器和频道权限不足，并提示新建配置先保存API设置再连接。
+游戏翻译仅传入指定语言及消息、回复或上下文中实际出现的别名，减少不必要的输入。保留歧义候选、指定译法、条件、对象与角色及技能上下文。与公共数据库读取工具共用资料构建逻辑，不增加AI请求。保留普通翻译、API密钥和配置设置。

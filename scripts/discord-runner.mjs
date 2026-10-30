@@ -4,6 +4,7 @@ import { settings, UserError } from '../src/config.js';
 import { validateApiSettings, GuildVault } from '../src/vault.js';
 import { Store } from '../src/store.js';
 import { Translator, loadGlossary } from '../src/translator.js';
+import { runtimeGlossary } from '../src/glossary-runtime.js';
 import { RunnerClient, processRunnerJob } from '../src/runner-client.js';
 import { updateSharedGlossary } from '../src/shared-glossary.js';
 import { createInterface } from 'node:readline/promises';
@@ -47,10 +48,21 @@ async function main() {
   while (!stopping) {
     try {
       if (process.env.SHARED_GLOSSARY_UPDATES !== 'off' && Date.now() - checked > 6 * 3600000) await refresh();
-      config.glossaryHash = createHash('sha256').update(readFileSync(glossaryPath)).digest('hex');
+      const glossarySnapshot = runtimeGlossary.get(glossaryPath);
+      config.glossaryHash = glossarySnapshot.hash;
       const job = await client.poll(config);
       connectionStatus(true);
-      if (job) { await processRunnerJob(client, job, new Translator(config, usage, glossaryPath)); continue; }
+      if (job) {
+        await processRunnerJob(client, job, new Translator(config, usage, glossaryPath, fetch, glossarySnapshot), {
+          onFailure: diagnostic => {
+            const event = { event: 'runner-translation-failed', at: new Date().toISOString(), provider: config.provider, ...diagnostic };
+            console.warn(JSON.stringify(event));
+            const path = resolve(folder, 'last-failure.json');
+            writeFileSync(path + '.tmp', JSON.stringify(event), { mode: 0o600 }); renameSync(path + '.tmp', path);
+          },
+        });
+        continue;
+      }
     } catch { connectionStatus(false); console.warn(ui('failed')); }
     await new Promise(done => setTimeout(done, 3000));
   }

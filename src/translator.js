@@ -4,7 +4,7 @@ import { geminiTranslation } from './gemini.js';
 import { protectEmojis } from './emoji.js';
 import { protectLayout } from './layout.js';
 import { validateCombatAttributes } from './attributes.js';
-import { localizedNames } from './languages.js';
+import { legacyPromptEntries } from './glossary-prompt.js';
 import { runtimeGlossary } from './glossary-runtime.js';
 import { chinesePartyHints, koreanPartyInitial, PARTY_SHORTHAND_INSTRUCTION } from './party-shorthand.js';
 export { loadGlossary } from './glossary-runtime.js';
@@ -53,12 +53,11 @@ export class Translator {
     const partyHints = chinesePartyHints(entries, [text, reply?.text ?? '', ...context.map(c => c.text)].join('\n'));
     const selected = [...new Map([...direct, ...entries.filter(e => partyHints.has(e.id)), ...indirect].map(e => [e.id, e])).values()].slice(0, 30);
     const selectedIds = new Set(selected.map(e => e.id));
-    const terms = selected
-      .map(entry => ({ ...entry, preferred: localizedNames(entry) }))
-      .map(({ id, preferred, communityPreferred, aliases, category, meaning, rule, communityRule, relatedSkills, characterId, characterName, releaseStatus, releaseVersion, sourceVersion }) => ({
-        id, preferred, outputPreferred: this.config.style === 'community' ? { ...preferred, ...communityPreferred } : preferred,
-        aliases, category, meaning, rule, communityRule, relatedSkills, characterId, characterName, releaseStatus, releaseVersion, sourceVersion,
-        ...(partyHints.has(id) ? { partyInitialKo: koreanPartyInitial({preferred}), partyHints: partyHints.get(id).filter(hint => hint.slots.every(slot => slot.ids.every(candidate => selectedIds.has(candidate)))) } : {}),
+    const languages = [...new Set([...targets, sourceLanguage].filter(language => Object.hasOwn(LANGUAGES, language || '')))];
+    const searchText = [text, reply?.text ?? '', ...context.map(c => c.text)].join('\n');
+    const terms = legacyPromptEntries(selected, { languages, style: this.config.style, text: searchText, fallbackLanguages: Object.keys(LANGUAGES) })
+      .map((row, index) => ({ ...row, outputPreferred: row.outputPreferred || row.preferred,
+        ...(partyHints.has(row.id) ? { partyInitialKo: koreanPartyInitial(selected[index]), partyHints: partyHints.get(row.id).filter(hint => hint.slots.every(slot => slot.ids.every(candidate => selectedIds.has(candidate)))) } : {}),
       }));
     const properties = Object.fromEntries(targets.map(t => [t, { type: 'string' }]));
     const instructions = translationMode === 'general' ? GENERAL_TRANSLATION_INSTRUCTIONS : `You translate Discord conversations about Zenless Zone Zero.

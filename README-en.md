@@ -4,7 +4,7 @@
 
 Translate new messages between language channels. Run the personal runner on your PC or your own server using your own API key.
 
-**[① Install the Discord bot](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② Download the PC runner · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.5/zenless-discord-runner-0.3.5-win-x64.zip)**
+**[① Install the Discord bot](https://discord.com/oauth2/authorize?client_id=1557261995215028254&scope=bot%20applications.commands&permissions=536939520&integration_type=0) · [② Download the PC runner · Windows x64](https://github.com/Odarom/zenless-discord-translator/releases/download/v0.3.6/zenless-discord-runner-0.3.6-win-x64.zip)**
 
 ## Windows PC
 
